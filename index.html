@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Encuesta Clínico-Epidemiológica – Síndrome de Guillain-Barré</title>
+<style>
+:root{--azul:#1f4e79;--azul2:#2e75b6;--fondo:#f4f6f9;--borde:#c9d3e0;}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,"Segoe UI",Roboto,Arial,sans-serif;background:var(--fondo);color:#1c2733;font-size:15px}
+header{background:linear-gradient(135deg,var(--azul),var(--azul2));color:#fff;padding:22px 18px;text-align:center}
+header h1{margin:0;font-size:1.2rem;letter-spacing:.3px}
+header p{margin:6px 0 0;opacity:.9;font-size:.82rem}
+form{max-width:1050px;margin:18px auto 60px;padding:0 14px}
+fieldset{background:#fff;border:1px solid var(--borde);border-radius:10px;padding:14px 16px 18px;margin:0 0 16px}
+legend{font-weight:700;color:var(--azul);padding:0 8px;font-size:.95rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px 18px}
+.campo{display:flex;flex-direction:column;gap:5px}
+.campo.ancho{grid-column:1/-1}
+.etq{font-size:.78rem;font-weight:700;color:#41556b;text-transform:uppercase;letter-spacing:.3px}
+input[type=text],input[type=number],input[type=date],textarea,select{
+  width:100%;padding:8px 10px;border:1px solid var(--borde);border-radius:7px;font:inherit;background:#fff}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--azul2);outline-offset:1px;border-color:var(--azul2)}
+textarea{min-height:95px;resize:vertical}
+.opts{display:flex;flex-wrap:wrap;gap:6px 16px;padding:4px 0}
+.opts label{display:inline-flex;align-items:center;gap:5px;font-size:.9rem;cursor:pointer}
+.chk{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:4px 14px;padding:4px 0}
+.chk label{display:flex;align-items:center;gap:6px;font-size:.9rem;cursor:pointer}
+.acciones{position:sticky;bottom:0;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;
+  background:#fff;border-top:2px solid var(--azul);padding:12px;border-radius:10px 10px 0 0;box-shadow:0 -4px 14px rgba(0,0,0,.08)}
+button{font:inherit;font-weight:600;padding:11px 22px;border-radius:8px;border:none;cursor:pointer}
+.btn-principal{background:var(--azul);color:#fff}
+.btn-principal:hover{background:var(--azul2)}
+.btn-principal:disabled{background:#8aa4bf;cursor:not-allowed}
+.btn-sec{background:#e6edf5;color:var(--azul)}
+.msg{padding:12px 16px;border-radius:8px;margin:0 0 14px;font-weight:600;display:none}
+.msg.ok{background:#e3f6e8;color:#1b6b32;border:1px solid #9ad3ab;display:block}
+.msg.err{background:#fdeaea;color:#96201f;border:1px solid #f0b3b2;display:block}
+.msg.info{background:#eaf2fb;color:#1f4e79;border:1px solid #b6cfe8;display:block}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Encuesta Clínico-Epidemiológica del Síndrome de Guillain-Barré</h1>
+  <p>Hospital Provincial Saturnino Lora &middot; Anexo 1</p>
+</header>
+
+<form id="encuesta" autocomplete="off">
+  <div id="mensaje" class="msg"></div>
+
+  <!-- ============ I. DATOS GENERALES ============ -->
+  <fieldset>
+    <legend>I. Datos generales de identidad</legend>
+    <div class="grid">
+      <div class="campo"><span class="etq">Hospital</span>
+        <input type="text" name="hospital" value="Hospital Provincial Saturnino Lora" required></div>
+      <div class="campo"><span class="etq">H.C.</span>
+        <input type="text" name="hc" inputmode="numeric" maxlength="20"></div>
+      <div class="campo ancho"><span class="etq">Nombre y apellidos</span>
+        <input type="text" name="nombre" required></div>
+      <div class="campo"><span class="etq">Carné de identidad</span>
+        <input type="text" name="carne" inputmode="numeric" maxlength="11" pattern="\d{0,11}" placeholder="11 dígitos"></div>
+      <div class="campo"><span class="etq">Edad (años)</span>
+        <input type="number" name="edad" min="0" max="120" required></div>
+      <div class="campo ancho"><span class="etq">Dirección</span>
+        <input type="text" name="direccion"></div>
+      <div class="campo"><span class="etq">Municipio</span>
+        <input type="text" name="municipio" value="Santiago de Cuba"></div>
+      <div class="campo"><span class="etq">Provincia</span>
+        <input type="text" name="provincia" value="Santiago de Cuba"></div>
+
+      <div class="campo"><span class="etq">Color de la piel</span>
+        <div class="opts">
+          <label><input type="radio" name="color_piel" value="B"> B</label>
+          <label><input type="radio" name="color_piel" value="N"> N</label>
+          <label><input type="radio" name="color_piel" value="M"> M</label>
+          <label><input type="radio" name="color_piel" value="A"> A</label>
+        </div>
+      </div>
+      <div class="campo"><span class="etq">Sexo</span>
+        <div class="opts">
+          <label><input type="radio" name="sexo" value="M" required> M</label>
+          <label><input type="radio" name="sexo" value="F"> F</label>
+        </div>
+      </div>
+
+      <div class="campo ancho"><span class="etq">Ocupación</span>
+        <div class="opts">
+          <label><input type="radio" name="ocupacion" value="Obrero"> Obrero</label>
+          <label><input type="radio" name="ocupacion" value="Profesional o Técnico"> Profesional o Técnico</label>
+          <label><input type="radio" name="ocupacion" value="Agricultor"> Agricultor</label>
+          <label><input type="radio" name="ocupacion" value="Estudiante"> Estudiante</label>
+          <label><input type="radio" name="ocupacion" value="Ama de casa"> Ama de casa</label>
+          <label><input type="radio" name="ocupacion" value="Jubilado"> Jubilado</label>
+          <label><input type="radio" name="ocupacion" value="Cuentapropista"> Cuentapropista</label>
+          <label><input type="radio" name="ocupacion" value="Ninguna"> Ninguna</label>
+        </div>
+      </div>
+
+      <div class="campo"><span class="etq">Recibió asistencia previa</span>
+        <div class="opts">
+          <label><input type="radio" name="asistencia_previa" value="No"> No</label>
+          <label><input type="radio" name="asistencia_previa" value="Si"> Sí</label>
+          <label><input type="radio" name="asistencia_previa" value="No precisado"> No precisado</label>
+        </div>
+      </div>
+      <div class="campo"><span class="etq">Especifique</span>
+        <input type="text" name="asistencia_previa_esp"></div>
+
+      <div class="campo"><span class="etq">Fecha de llegada al hospital</span>
+        <input type="date" name="fecha_llegada"></div>
+      <div class="campo"><span class="etq">Fecha de ingreso</span>
+        <input type="date" name="fecha_ingreso"></div>
+    </div>
+  </fieldset>
+
+  <!-- ============ II. HISTORIA ============ -->
+  <fieldset>
+    <legend>II. Historia de la enfermedad</legend>
+    <div class="grid">
+      <div class="campo ancho">
+        <span class="etq">Tiempo de evolución de los síntomas, modo de instalación y cronograma</span>
+        <textarea name="historia" placeholder="Ej.: 16/06 diarreas (2 pastosas)... 19/06 debilidad en MI... 20/06 progresión... 21/06 dolor lumbar, se hospitaliza... 23/06 parálisis facial periférica izquierda."></textarea>
+      </div>
+    </div>
+  </fieldset>
+
+  <!-- ============ III. EPIDEMIOLOGÍA ============ -->
+  <fieldset>
+    <legend>III. Epidemiología</legend>
+    <div class="grid">
+
+      <div class="campo"><span class="etq">Factores predisponentes</span>
+        <div class="opts">
+          <label><input type="radio" name="factores_predisponentes" value="No"> No</label>
+          <label><input type="radio" name="factores_predisponentes" value="Si"> Sí</label>
+        </div>
+      </div>
+
+      <div class="campo"><span class="etq">Infección de vías respiratorias altas</span>
+        <div class="opts">
+          <label><input type="radio" name="ivra" value="No"> No</label>
+          <label><input type="radio" name="ivra" value="Si"> Sí</label>
+        </div>
+      </div>
+      <div class="campo"><span class="etq">IVRA – Fecha inicio de síntomas</span>
+        <input type="date" name="ivra_fecha"></div>
+
+      <div class="campo"><span class="etq">Infección gastroentérica</span>
+        <div class="opts">
+          <label><input type="radio" name="gastroenteritis" value="No"> No</label>
+          <label><input type="radio" name="gastroenteritis" value="Si"> Sí</label>
+        </div>
+      </div>
+      <div class="campo"><span class="etq">Gastroentérica – Fecha inicio</span>
+        <input type="date" name="gastroenteritis_fecha"></div>
+
+      <div class="campo"><span class="etq">Síndrome febril inespecífico</span>
+        <div class="opts">
+          <label><input type="radio" name="sfi" value="No"> No</label>
+          <label><input type="radio" name="sfi" value="Si"> Sí</label>
+        </div>
+      </div>
+      <div class="campo"><span class="etq">S. febril – Fecha inicio</span>
+        <input type="date" name="sfi_fecha"></div>
+
+      <div class="campo"><span class="etq">Dengue</span>
+        <div class="opts">
+          <label><input type="radio" name="dengue" value="No"> No</label>
+          <label><input type="radio" name="dengue" value="Si"> Sí</label>
+        </div>
+      </div>
+      <div class="campo"><span class="etq">Dengue – Fecha inicio</span>
+        <input type="date" name="dengue_fecha"></div>
+
+      <div class="campo"><span class="etq">Vacunaciones</span>
+        <div class="opts">
+          <label><input type="radio" name="vacunaciones" value="No"> No</label>
+          <label><input type="radio" name="vacunaciones" value="Si"> Sí</label>
+        </div>
+      </div>
+      <div class="campo"><span class="etq">¿Cuál vacuna?</span>
+        <input type="text" name="vacuna_cual"></div>
+      <div class="campo"><span class="etq">Fecha de vacunación</span>
+        <input type="date" name="vacuna_fecha"></div>
+
+      <div class="campo"><span class="etq">Chikungunya</span>
+        <div class="opts">
+          <label><input type="radio" name="chikungunya" value="No"> No</label>
+          <label><input type="radio" name="chikungunya" value="Si"> Sí</label>
+        </div>
+      </div>
+      <div class="campo"><span class="etq">Chikungunya – Fecha inicio</span>
+        <input type="date" name="chikungunya_fecha"></div>
+
+      <div class="campo"><span class="etq">¿Ha viajado a algún país en los últimos 20 días?</span>
+        <div class="opts">
+          <label><input type="radio" name="viaje" value="No"> No</label>
+          <label><input type="radio" name="viaje" value="Si"> Sí</label>
+        </div>
+      </div>
+      <div class="campo"><span class="etq">¿Cuál país?</span>
+        <input type="text" name="viaje_pais"></div>
+      <div class="campo"><span class="etq">Fecha de regreso</span>
+        <input type="date" name="viaje_regreso"></div>
+
+      <div class="campo"><span class="etq">Estando en el extranjero tuvo alguna enfermedad</span>
+        <div class="opts">
+          <label><input type="radio" name="enfermedad_extranjero" value="No"> No</label>
+          <label><input type="radio" name="enfermedad_extranjero" value="Si"> Sí</label>
+        </div>
+      </div>
+      <div class="campo"><span class="etq">¿Cuál?</span>
+        <input type="text" name="enfermedad_extranjero_cual"></div>
+      <div class="campo"><span class="etq">Fecha</span>
+        <input type="date" name="enfermedad_extranjero_fecha"></div>
+
+      <div class="campo"><span class="etq">Gestante</span>
+        <div class="opts">
+          <label><input type="radio" name="gestante" value="No"> No</label>
+          <label><input type="radio" name="gestante" value="Si"> Sí</label>
+        </div>
+      </div>
+      <div class="campo"><span class="etq">Tiempo de gestación (semanas)</span>
+        <input type="number" name="gestacion_semanas" min="0" max="45"></div>
+
+      <div class="campo"><span class="etq">Otros</span>
+        <div class="opts">
+          <label><input type="radio" name="otros" value="No"> No</label>
+          <label><input type="radio" name="otros" value="Si"> Sí</label>
+        </div>
+      </div>
+      <div class="campo"><span class="etq">Otros – Fecha inicio de síntomas</span>
+        <input type="date" name="otros_fecha"></div>
+
+      <div class="campo ancho"><span class="etq">A.P.P. (antecedentes personales patológicos)</span>
+        <div class="chk">
+          <label><input type="checkbox" name="app" value="Cardiopatía Isquémica"> Cardiopatía Isquémica</label>
+          <label><input type="checkbox" name="app" value="Hipertensión arterial"> Hipertensión arterial</label>
+          <label><input type="checkbox" name="app" value="Diabetes"> Diabetes</label>
+          <label><input type="checkbox" name="app" value="Fibrilación Auricular"> Fibrilación Auricular</label>
+          <label><input type="checkbox" name="app" value="Dislipidemia"> Dislipidemia</label>
+          <label><input type="checkbox" name="app" value="Hiperuricemia"> Hiperuricemia</label>
+          <label><input type="checkbox" name="app" value="Claudicación"> Claudicación</label>
+          <label><input type="checkbox" name="app" value="EPOC"> EPOC</label>
+          <label><input type="checkbox" name="app" value="ECV"> ECV</label>
+          <label><input type="checkbox" name="app" value="Neoplasia"> Neoplasia</label>
+        </div>
+      </div>
+      <div class="campo ancho"><span class="etq">A.P.P. – Otro</span>
+        <input type="text" name="app_otro" placeholder="Ej.: Giardiasis"></div>
+
+      <div class="campo ancho"><span class="etq">Hábitos tóxicos</span>
+        <div class="opts">
+          <label><input type="checkbox" name="tabaquismo" value="Si"> Tabaquismo</label>
+          <label><input type="checkbox" name="alcohol" value="Si"> Alcohol</label>
+          <label><input type="checkbox" name="drogas" value="Si"> Drogas</label>
+        </div>
+      </div>
+      <div class="campo ancho"><span class="etq">Hábitos tóxicos – Especificar</span>
+        <input type="text" name="habitos_esp" placeholder="Ej.: alcohol ocasional"></div>
+
+      <div class="campo ancho"><span class="etq">Alergia a</span>
+        <input type="text" name="alergia" placeholder="No / especifique"></div>
+    </div>
+  </fieldset>
+
+  <!-- ============ IV. MANIFESTACIONES CLÍNICAS ============ -->
+  <fieldset>
+    <legend>IV. Manifestaciones clínicas</legend>
+    <div class="grid">
+      <div class="campo"><span class="etq">Déficit motor</span>
+        <div class="opts">
+          <label><input type="radio" name="deficit_motor" value="No"> No</label>
+          <label><input type="radio" name="deficit_motor" value="Si"> Sí</label>
+        </div>
+      </div>
+      <div class="campo"><span class="etq">Déficit motor – Miembros inferiores</span>
+        <div class="opts">
+          <label><input type="radio" name="deficit_mi" value="No"> No</label>
+          <label><input type="radio" name="deficit_mi" value="Si"> Sí</label>
+        </div>
+      </div>
+      <div class="campo"><span class="etq">Déficit motor – Miembros superiores</span>
+        <div class="opts">
+          <label><input type="radio" name="deficit_ms" value="No"> No</label>
+          <label><input type="radio" name="deficit_ms" value="Si"> Sí</label>
+        </div>
+      </div>
+      <div class="campo"><span class="etq">Déficit motor – MS + MI</span>
+        <div class="opts">
+          <label><input type="radio" name="deficit_ms_mi" value="No"> No</label>
+          <label><input type="radio" name="deficit_ms_mi" value="Si"> Sí</label>
+        </div>
+      </div>
+
+      <div class="campo"><span class="etq">Arreflexia o hiporreflexia</span>
+        <div class="opts">
+          <label><input type="radio" name="arreflexia" value="No"> No</label>
+          <label><input type="radio" name="arreflexia" value="Si"> Sí</label>
+        </div>
+      </div>
+      <div class="campo"><span class="etq">Disfunción autonómica</span>
+        <div class="opts">
+          <label><input type="radio" name="disautonomia" value="No"> No</label>
+          <label><input type="radio" name="disautonomia" value="Si"> Sí</label>
+        </div>
+      </div>
+      <div class="campo"><span class="etq">Toma motora de tronco y músculos respiratorios</span>
+        <div class="opts">
+          <label><input type="radio" name="toma_tronco" value="No"> No</label>
+          <label><input type="radio" name="toma_tronco" value="Si"> Sí</label>
+        </div>
+      </div>
+      <div class="campo"><span class="etq">Toma de pares craneales</span>
+        <div class="opts">
+          <label><input type="radio" name="pares_craneales" value="No"> No</label>
+          <label><input type="radio" name="pares_craneales" value="Si"> Sí</label>
+        </div>
+      </div>
+      <div class="campo"><span class="etq">Pares craneales – Especifique</span>
+        <input type="text" name="pares_craneales_esp" placeholder="Ej.: VII par"></div>
+
+      <div class="campo"><span class="etq">Trastornos sensitivos</span>
+        <div class="opts">
+          <label><input type="radio" name="sensitivos" value="No"> No</label>
+          <label><input type="radio" name="sensitivos" value="Si"> Sí</label>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <!-- ============ V. CRITERIOS DIAGNÓSTICOS ============ -->
+  <fieldset>
+    <legend>V. Criterios diagnósticos</legend>
+    <div class="opts">
+      <label><input type="radio" name="criterio_dx" value="Clínico"> Clínico</label>
+      <label><input type="radio" name="criterio_dx" value="Clínico + LCR"> Clínico + LCR</label>
+      <label><input type="radio" name="criterio_dx" value="Clínico + LCR + Neuroconducción"> Clínico + LCR + Neuroconducción</label>
+      <label><input type="radio" name="criterio_dx" value="Clínico + Neuroconducción"> Clínico + Neuroconducción</label>
+    </div>
+  </fieldset>
+
+  <!-- ============ VI. EVOLUCIÓN ============ -->
+  <fieldset>
+    <legend>VI. Evolución</legend>
+    <div class="grid">
+      <div class="campo"><span class="etq">Estado</span>
+        <div class="opts">
+          <label><input type="radio" name="evolucion" value="Vivo"> Vivo</label>
+          <label><input type="radio" name="evolucion" value="Fallecido"> Fallecido</label>
+        </div>
+      </div>
+      <div class="campo"><span class="etq">Fecha de egreso</span>
+        <input type="date" name="fecha_egreso"></div>
+      <div class="campo"><span class="etq">Fecha de fallecimiento</span>
+        <input type="date" name="fecha_fallecimiento"></div>
+
+      <div class="campo"><span class="etq">Secuelas</span>
+        <div class="opts">
+          <label><input type="radio" name="secuelas" value="Sin secuelas"> Sin secuelas</label>
+          <label><input type="radio" name="secuelas" value="Con secuelas"> Con secuelas</label>
+        </div>
+      </div>
+      <div class="campo ancho"><span class="etq">¿Cuáles secuelas?</span>
+        <input type="text" name="secuelas_cuales" placeholder="Ej.: debilidad motora en las 4 extremidades"></div>
+
+      <div class="campo"><span class="etq">Estadía (días)</span>
+        <input type="number" name="estadia" min="0"></div>
+    </div>
+  </fieldset>
+
+  <!-- ============ VII. TRATAMIENTO ============ -->
+  <fieldset>
+    <legend>VII. Tratamiento</legend>
+    <div class="grid">
+      <div class="campo"><span class="etq">Ventilación mecánica</span>
+        <div class="opts">
+          <label><input type="radio" name="ventilacion" value="No"> No</label>
+          <label><input type="radio" name="ventilacion" value="Si"> Sí</label>
+        </div>
+      </div>
+      <div class="campo"><span class="etq">Ventilación mecánica (días)</span>
+        <input type="number" name="ventilacion_dias" min="0"></div>
+
+      <div class="campo ancho"><span class="etq">Tratamientos aplicados</span>
+        <div class="opts">
+          <label><input type="checkbox" name="intacglobin" value="Si"> Intacglobin</label>
+          <label><input type="checkbox" name="plasmaferesis" value="Si"> Plasmaféresis</label>
+          <label><input type="checkbox" name="vitaminoterapia" value="Si"> Vitaminoterapia</label>
+          <label><input type="checkbox" name="fisioterapia" value="Si"> Fisioterapia precoz</label>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <!-- ============ CIERRE / FIRMAS ============ -->
+  <fieldset>
+    <legend>Confección del expediente</legend>
+    <div class="grid">
+      <div class="campo"><span class="etq">Fecha de confección</span>
+        <input type="date" name="fecha_confeccion"></div>
+      <div class="campo"><span class="etq">Médico Residente</span>
+        <input type="text" name="medico_residente"></div>
+      <div class="campo"><span class="etq">Código del residente</span>
+        <input type="text" name="codigo_residente"></div>
+      <div class="campo"><span class="etq">Médico Especialista</span>
+        <input type="text" name="medico_especialista" value="Dr. Osvaldo Ramon Aguilera Pacheco"></div>
+      <div class="campo"><span class="etq">Código del especialista</span>
+        <input type="text" name="codigo_especialista" value="19084"></div>
+      <div class="campo"><span class="etq">Supervisado por</span>
+        <input type="text" name="supervisado_por"></div>
+      <div class="campo"><span class="etq">Código del supervisor</span>
+        <input type="text" name="codigo_supervisor"></div>
+    </div>
+  </fieldset>
+
+  <div class="acciones">
+    <button type="submit" class="btn-principal" id="btnGuardar">💾 Guardar encuesta en Excel</button>
+    <button type="button" class="btn-sec" id="btnPendientes">⬇️ Descargar pendientes (Excel)</button>
+    <button type="reset" class="btn-sec">🧹 Limpiar formulario</button>
+  </div>
+</form>
+
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<script>
+/* ============================================================
+   CONFIGURACIÓN — cambie solo esta línea según su backend
+   ------------------------------------------------------------
+   A) Servidor Flask local:      '/guardar'
+   B) Google Apps Script:        'https://script.google.com/macros/s/XXXXXXXX/exec'
+   ============================================================ */
+const API_URL = 'https://script.google.com/macros/s/AKfycbyx254OOS4kXV-mQZL_3T2CEYzAkABJQxviOFKDcKcKIOvmUeJf-2hm5w_oi9ROB_v0ag/exec';
+
+const form    = document.getElementById('encuesta');
+const cajaMsg = document.getElementById('mensaje');
+const btnGua  = document.getElementById('btnGuardar');
+const LS_KEY  = 'gbs_encuestas_pendientes';
+
+/* ---------- utilidades de interfaz ---------- */
+function mostrar(tipo, texto){
+  cajaMsg.className = 'msg ' + tipo;
+  cajaMsg.textContent = texto;
+  cajaMsg.scrollIntoView({behavior:'smooth', block:'center'});
+}
+function setCargando(estado){
+  btnGua.disabled = estado;
+  btnGua.textContent = estado ? '⏳ Guardando…' : '💾 Guardar encuesta en Excel';
+}
+
+/* ---------- recoger TODOS los campos del formulario ---------- */
+function recolectar(){
+  const obj = {};
+  form.querySelectorAll('input[name], select[name], textarea[name]').forEach(el => {
+    const n = el.name;
+    if (el.type === 'checkbox'){
+      if (el.checked) obj[n] = obj[n] ? obj[n] + '; ' + el.value : el.value;
+      else if (obj[n] === undefined) obj[n] = '';
+    } else if (el.type === 'radio'){
+      if (el.checked) obj[n] = el.value;
+      else if (obj[n] === undefined) obj[n] = '';
+    } else {
+      obj[n] = (el.value || '').trim();
+    }
+  });
+  obj.fecha_registro = new Date().toLocaleString('es-ES');
+  return obj;
+}
+
+/* ---------- almacenamiento local de respaldo ---------- */
+function pendientes(){ try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch(e){ return []; } }
+function guardarPendiente(d){
+  const p = pendientes(); p.push(d);
+  localStorage.setItem(LS_KEY, JSON.stringify(p));
+}
+function borrarPendientes(){ localStorage.removeItem(LS_KEY); }
+
+/* ---------- envío al servidor ---------- */
+async function enviar(datos){
+  const resp = await fetch(API_URL, {
+    method: 'POST',
+    headers: {'Content-Type': 'text/plain;charset=utf-8'}, // evita preflight CORS
+    body: JSON.stringify(datos)
+  });
+  const res = await resp.json();
+  if (!res.ok) throw new Error(res.mensaje || 'Error del servidor');
+  return res;
+}
+
+/* ---------- evento principal ---------- */
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!form.reportValidity()) return;
+
+  const datos = recolectar();
+  setCargando(true);
+  try {
+    const res = await enviar(datos);
+    mostrar('ok', `✔ Encuesta guardada correctamente en el Excel (fila ${res.filas}). Puede registrar la siguiente.`);
+    form.reset();
+    ponerFechaHoy();
+  } catch (err) {
+    guardarPendiente(datos);
+    mostrar('err', '⚠ No se pudo conectar con el servidor. La encuesta quedó guardada temporalmente en este navegador; use "Descargar pendientes (Excel)" o reintente cuando haya conexión.');
+    form.reset();
+    ponerFechaHoy();
+  } finally {
+    setCargando(false);
+  }
+});
+
+/* ---------- descargar pendientes como Excel ---------- */
+document.getElementById('btnPendientes').addEventListener('click', () => {
+  const p = pendientes();
+  if (p.length === 0){ mostrar('info', 'No hay encuestas pendientes en este navegador.'); return; }
+  if (typeof XLSX === 'undefined'){ mostrar('err', 'No se pudo cargar el generador de Excel (sin internet).'); return; }
+  const ws = XLSX.utils.json_to_sheet(p);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Encuestas');
+  XLSX.writeFile(wb, 'encuestas_GBS_pendientes.xlsx');
+  mostrar('info', `Se descargaron ${p.length} encuesta(s) pendiente(s).`);
+});
+
+/* ---------- fecha de confección por defecto ---------- */
+function ponerFechaHoy(){
+  const f = form.querySelector('[name=fecha_confeccion]');
+  if (f && !f.value) f.value = new Date().toISOString().slice(0,10);
+}
+ponerFechaHoy();
+</script>
+</body>
+</html>
